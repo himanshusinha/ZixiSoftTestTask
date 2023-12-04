@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "307452437176",
+    "project_id": "zixisofttesttask",
+    "storage_bucket": "zixisofttesttask.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307452437176:android:6e18f3fc243d86072e4a4d",
+        "android_client_info": {
+          "package_name": "com.zixisofttask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoBZl1fp9KFxif0ySCQ75lG1jCeoz7g4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
