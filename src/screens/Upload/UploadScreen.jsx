@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   Modal,
+  Platform, // Import the Platform module
 } from 'react-native';
 import {StackActions, useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
@@ -19,6 +20,8 @@ import styles from './styles';
 import ImagePicker from 'react-native-image-crop-picker';
 import routes from '../../constants/routes';
 import Loader from '../../components/loader/Loader';
+
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const UploadScreen = () => {
   const [name, setName] = useState('');
@@ -55,6 +58,19 @@ const UploadScreen = () => {
 
   const openImagePicker = async () => {
     try {
+      // Check platform before requesting permission
+      if (Platform.OS === 'android') {
+        const permissionStatus = await requestPermission();
+
+        if (permissionStatus !== RESULTS.GRANTED) {
+          Alert.alert(
+            'Permission denied',
+            'Please grant permission to access photos.',
+          );
+          return;
+        }
+      }
+
       const image = await ImagePicker.openPicker({
         mediaType: 'photo',
         includeBase64: true,
@@ -62,14 +78,29 @@ const UploadScreen = () => {
       });
 
       const lastPathSegment = image.path ? image.path.split('/').pop() : null;
-
       const imageData = image.data
         ? `data:${image.mime};base64,${image.data}`
         : null;
 
       setSelectedImage(imageData);
       setSelectedImageName(lastPathSegment);
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error selecting image:', error);
+    }
+  };
+
+  const requestPermission = async () => {
+    try {
+      const status = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+
+      if (status !== RESULTS.GRANTED) {
+        return request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      }
+
+      return status;
+    } catch (error) {
+      console.error('Error checking permission:', error);
+    }
   };
 
   const onSubmit = async () => {
@@ -111,7 +142,7 @@ const UploadScreen = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('api error ', error.message);
+      console.error('API error ', error.message);
       setIsLoading(false);
     }
   };
