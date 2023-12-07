@@ -4,4 +4,6 @@ export default {
   UPLOAD_SCREEN: 'UploadScreen',
   GET_DATA_SCREEN: 'GetDataScreen',
   SIGN_UP_SCREEN: 'SignUpScreen',
+  FIRST_SCREEN: 'FirstScreen',
+  SECOND_SCREEN: 'SecondScreen',
 };
